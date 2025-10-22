@@ -125,4 +125,48 @@ namespace adas
         const Pose target({0, 0, 'E'});       // 如果指令正确执行，那么汽车应该向左转90度，姿态变为（0，0，E）
         ASSERT_EQ(target, executor->Query()); // 当L指令执行完，executor->Query()返回的姿态应该和target相等
     }
+    // 测试用例11， 测试Execute方法，在朝向为E，起点为 （0，0）时去执行R指令是否正确
+    TEST(ExecutorTest, should_return_facing_S_given_command_is_R_and_facing_is_E)
+    {
+        // given 给定一个executor
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'E'})); // 初始姿态为（0，0，E）
+        // when 执行R指令
+        executor->Execute("R");
+        // then
+        const Pose target({0, 0, 'S'});       // 如果指令正确执行，那么汽车应该向右转90度，姿态变为（0，0，S）
+        ASSERT_EQ(target, executor->Query()); // 当R指令执行完，executor->Query()返回的姿态应该和target相等
+    }
+    // 测试用例12， 测试Execute方法，在朝向为W，起点为 （0，0）时去执行R指令是否正确
+    TEST(ExecutorTest, should_return_facing_N_given_command_is_R_and_facing_is_W)
+    {
+        // given 给定一个executor
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'W'})); // 初始姿态为（0，0，W）
+        // when 执行R指令
+        executor->Execute("R");
+        // then
+        const Pose target({0, 0, 'N'});       // 如果指令正确执行，那么汽车应该向右转90度，姿态变为（0，0，N）
+        ASSERT_EQ(target, executor->Query()); // 当R指令执行完，executor->Query()返回的姿态应该和target相等
+    }
+    // 测试用例13， 测试Execute方法，在朝向为N，起点为 （0，0）时去执行R指令是否正确
+    TEST(ExecutorTest, should_return_facing_E_given_command_is_R_and_facing_is_N)
+    {
+        // given 给定一个executor
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'N'})); // 初始姿态为（0，0，N）
+        // when 执行R指令
+        executor->Execute("R");
+        // then
+        const Pose target({0, 0, 'E'});       // 如果指令正确执行，那么汽车应该向右转90度，姿态变为（0，0，E）
+        ASSERT_EQ(target, executor->Query()); // 当R指令执行完，executor->Query()返回的姿态应该和target相等
+    }
+    // 测试用例14， 测试Execute方法，在朝向为S，起点为 （0，0）时去执行R指令是否正确
+    TEST(ExecutorTest, should_return_facing_W_given_command_is_R_and_facing_is_S)
+    {
+        // given 给定一个executor
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'S'})); // 初始姿态为（0，0，S）
+        // when 执行R指令
+        executor->Execute("R");
+        // then
+        const Pose target({0, 0, 'W'});       // 如果指令正确执行，那么汽车应该向右转90度，姿态变为（0，0，W）
+        ASSERT_EQ(target, executor->Query()); // 当R指令执行完，executor->Query()返回的姿态应该和target相等
+    }
 }
