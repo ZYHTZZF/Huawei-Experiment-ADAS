@@ -28,7 +28,11 @@ namespace adas
         void Execute(const std::string &commands) noexcept override;
 
     private:
+        // 当前汽车姿态
         Pose pose;
+        // 是否处于加速状态，默认是false
+        bool isFast;
+        void Move(void) noexcept;
     };
 
 } // namespace adas

@@ -4,7 +4,7 @@
 
 namespace adas
 {
-    ExecutorImpl::ExecutorImpl(const Pose &pose) noexcept : pose(pose) {}
+    ExecutorImpl::ExecutorImpl(const Pose &pose) noexcept : pose(pose) ,isFast(false) {}
 
     Pose ExecutorImpl::Query(void) const noexcept
     {
@@ -22,26 +22,54 @@ namespace adas
             //如果是M指令
             if(cmd == 'M')
             {
-                if(pose.heading == 'E') { pose.x += 1; }
-                else if(pose.heading == 'W') { pose.x -= 1; }
-                else if(pose.heading == 'N') { pose.y += 1; }
-                else if(pose.heading == 'S') { pose.y -= 1; }
-
+                Move();
             }
-            if(cmd == 'L')
+            else if(cmd == 'L')
             {
-                if(pose.heading == 'E') { pose.heading = 'N'; }
-                else if(pose.heading == 'N') { pose.heading = 'W'; }
-                else if(pose.heading == 'W') { pose.heading = 'S'; }
-                else if(pose.heading == 'S') { pose.heading = 'E'; }
+                if(!isFast)
+                {
+                    if(pose.heading == 'E') { pose.heading = 'N'; }
+                    else if(pose.heading == 'N') { pose.heading = 'W'; }
+                    else if(pose.heading == 'W') { pose.heading = 'S'; }
+                    else if(pose.heading == 'S') { pose.heading = 'E'; }
+                }
+                else
+                {
+                    //代码省略
+                }
             }
-            if(cmd == 'R')
+            else if(cmd == 'R')
             {
-                if(pose.heading == 'E') { pose.heading = 'S'; }
-                else if(pose.heading == 'S') { pose.heading = 'W'; }
-                else if(pose.heading == 'W') { pose.heading = 'N'; }
-                else if(pose.heading == 'N') { pose.heading = 'E'; }
+                if(!isFast)
+                {
+                    if(pose.heading == 'E') { pose.heading = 'S'; }
+                    else if(pose.heading == 'S') { pose.heading = 'W'; }
+                    else if(pose.heading == 'W') { pose.heading = 'N'; }
+                    else if(pose.heading == 'N') { pose.heading = 'E'; }
+                }
+                else
+                {
+                    //代码省略
+                }
             }
+            else if(cmd == 'F')
+            {
+                isFast=!isFast;
+            }
+        }
+    }
+    void ExecutorImpl::Move(void) noexcept
+    {
+        if(!isFast)
+        {
+            if(pose.heading=='E'){ pose.x+=1; }
+            else if(pose.heading=='W'){ pose.x-=1; }
+            else if(pose.heading=='N'){ pose.y+=1; }
+            else if(pose.heading=='S'){ pose.y-=1; }
+        }
+        else
+        {
+            //代码省略
         }
     }
 }
