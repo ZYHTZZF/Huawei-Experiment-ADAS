@@ -15,4 +15,8 @@ namespace adas
     {
         return new (std::nothrow) ExecutorImpl(pose); // 只在C++17下有效
     }
+
+    void ExecutorImpl::Execute(const std::string &commands) noexcept {
+        //先不给出实现，应该先定义好对应的测试用例
+    }
 }

@@ -24,6 +24,8 @@ namespace adas
     public:
         // 查询当前汽车姿态，重写基类的纯虚函数
         Pose Query(void) const noexcept override;
+        // 第二阶段新增加的纯虚函数，执行一个用字符串表示的指令
+        void Execute(const std::string &commands) noexcept override;
 
     private:
         Pose pose;

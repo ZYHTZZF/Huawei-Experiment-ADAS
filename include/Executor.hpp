@@ -33,6 +33,9 @@ namespace adas
         public:
         //查询当前汽车姿态，纯虚函数，留给子类具体实现
         virtual Pose Query(void) const noexcept=0;
+
+        //新增加的纯虚函数，职系那个一个用字符串便是的指令序列，如MLMRM，留给子类ExecutorImpl去实现
+        virtual void Execute(const std::string& commands) noexcept=0;
     };
 
 }//namespace adas

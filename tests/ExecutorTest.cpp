@@ -35,4 +35,15 @@ namespace adas
         const Pose target({0, 0, 'N'}); // 默认姿势是{0,0,'N'}
         ASSERT_EQ(target, executor->Query());
     }
+    //测试用例3，测试Execute方法，在朝向为E，起点为（0，0）时去执行M指令是否正确
+    TEST(ExecutorTest, should_return_x_plus_1_given_command_is_M_and_facing_is_E)
+    {
+        //given 给定一个executor
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'E'})); //初始姿态为（0，0，E）
+        //when 执行M指令
+        executor->Execute("M");
+        //then 
+        const Pose target({1, 0, 'E'}); //如果指令正确执行，那么汽车应该向东移动1个单位，姿态变为（1，0，E）
+        ASSERT_EQ(target, executor->Query());//当M指令执行完，executor->Query()返回的姿态应该和target相等
+    }
 }
