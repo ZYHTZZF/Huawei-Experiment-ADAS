@@ -17,6 +17,17 @@ namespace adas
     }
 
     void ExecutorImpl::Execute(const std::string &commands) noexcept {
-        //先不给出实现，应该先定义好对应的测试用例
+        for(const auto cmd : commands)
+        {
+            //如果是M指令
+            if(cmd == 'M')
+            {
+                if(pose.heading == 'E') { pose.x += 1; }
+                else if(pose.heading == 'W') { pose.x -= 1; }
+                else if(pose.heading == 'N') { pose.y += 1; }
+                else if(pose.heading == 'S') { pose.y -= 1; }
+
+            }
+        }
     }
 }
