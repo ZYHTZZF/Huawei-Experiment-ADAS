@@ -28,6 +28,13 @@ namespace adas
         void Execute(const std::string &commands) noexcept override;
 
     private:
+        class ICommand
+        {
+        public:
+            // 给出析构函数和纯虚函数DoOperate的声明
+            virtual ~ICommand(void) noexcept = default;
+            virtual void DoOperate(ExecutorImpl &executor) const noexcept = 0;
+        };
         // 当前汽车姿态
         Pose pose;
         // 是否处于加速状态，默认是false
@@ -35,15 +42,15 @@ namespace adas
         void Move(void) noexcept;
         void TurnLeft(void) noexcept;
         void TurnRight(void) noexcept;
-        class MoveCommand final
+        class MoveCommand final : public ICommand
         {
             public:
-            void DoOperate(ExecutorImpl& executor) const noexcept
+            void DoOperate(ExecutorImpl& executor) const noexcept override
             {
                 executor.Move();
             }
         };
-        class TurnLeftCommand final
+        class TurnLeftCommand final : public ICommand
         {
             public:
             void DoOperate(ExecutorImpl& executor) const noexcept
@@ -51,7 +58,7 @@ namespace adas
                 executor.TurnLeft();
             }
         };
-        class TurnRightCommand final
+        class TurnRightCommand final : public ICommand
         {
             public:
             void DoOperate(ExecutorImpl& executor) const noexcept
@@ -59,5 +66,6 @@ namespace adas
                 executor.TurnRight();
             }
         };
+        
     };
 } // namespace adas
