@@ -8,7 +8,7 @@ namespace adas
     /*
     Executor的具体实现
     */
-    class ExecutorImpl : public Executor
+    class ExecutorImpl final: public Executor
     {
     public:
         // 构造函数，传入初始姿态
@@ -35,6 +35,13 @@ namespace adas
         void Move(void) noexcept;
         void TurnLeft(void) noexcept;
         void TurnRight(void) noexcept;
+        class MoveCommand final
+        {
+            public:
+            void DoOperate(ExecutorImpl& executor) const noexcept
+            {
+                executor.Move();
+            }
+        };
     };
-
 } // namespace adas
