@@ -34,6 +34,7 @@ namespace adas
         bool isFast;
         void Move(void) noexcept;
         void TurnLeft(void) noexcept;
+        void TurnRight(void) noexcept;
     };
 
 } // namespace adas

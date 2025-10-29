@@ -30,17 +30,7 @@ namespace adas
             }
             else if(cmd == 'R')
             {
-                if(!isFast)
-                {
-                    if(pose.heading == 'E') { pose.heading = 'S'; }
-                    else if(pose.heading == 'S') { pose.heading = 'W'; }
-                    else if(pose.heading == 'W') { pose.heading = 'N'; }
-                    else if(pose.heading == 'N') { pose.heading = 'E'; }
-                }
-                else
-                {
-                    //代码省略
-                }
+                TurnRight();
             }
             else if(cmd == 'F')
             {
@@ -70,6 +60,21 @@ namespace adas
             else if(pose.heading=='N'){ pose.heading='W'; }
             else if(pose.heading=='W'){ pose.heading='S'; }
             else if(pose.heading=='S'){ pose.heading='E'; }
+        }
+        else
+        {
+            //代码省略
+        }
+    }
+
+    void ExecutorImpl::TurnRight(void) noexcept
+    {
+        if(!isFast)
+        {
+            if(pose.heading=='E'){ pose.heading='S'; }
+            else if(pose.heading=='S'){ pose.heading='W'; }
+            else if(pose.heading=='W'){ pose.heading='N'; }
+            else if(pose.heading=='N'){ pose.heading='E'; }
         }
         else
         {
