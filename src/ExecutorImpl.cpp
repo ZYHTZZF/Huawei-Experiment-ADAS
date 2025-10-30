@@ -35,7 +35,8 @@ namespace adas
             }
             else if(cmd == 'F')
             {
-                isFast=!isFast;
+                Fast();
+                continue;
             }
             if(cmder)
             {
@@ -54,7 +55,10 @@ namespace adas
         }
         else
         {
-            //代码省略
+            if(pose.heading=='E'){ pose.x+=2; }
+            else if(pose.heading=='W'){ pose.x-=2; }
+            else if(pose.heading=='N'){ pose.y+=2; }
+            else if(pose.heading=='S'){ pose.y-=2; }
         }
     }
     void ExecutorImpl::TurnLeft(void) noexcept
@@ -68,7 +72,10 @@ namespace adas
         }
         else
         {
-            //代码省略
+            if(pose.heading=='E'){pose.x+=1; pose.heading='N'; }
+            else if(pose.heading=='N'){pose.y+=1; pose.heading='W'; }
+            else if(pose.heading=='W'){pose.x-=1; pose.heading='S'; }
+            else if(pose.heading=='S'){pose.y-=1; pose.heading='E'; }
         }
     }
 
@@ -83,7 +90,22 @@ namespace adas
         }
         else
         {
-            //代码省略
+            if(pose.heading=='E'){pose.x+=1; pose.heading='S'; }
+            else if(pose.heading=='S'){pose.y-=1; pose.heading='W'; }
+            else if(pose.heading=='W'){pose.x-=1; pose.heading='N'; }
+            else if(pose.heading=='N'){pose.y+=1; pose.heading='E'; }
         }
     }
+
+    void ExecutorImpl::Fast(void) noexcept
+    {
+        isFast = !isFast;
+    }
+
+    bool ExecutorImpl::IsFast(void) const noexcept
+    {
+        return isFast;
+    }
+
+    // 记录当前是否为加速状态
 }

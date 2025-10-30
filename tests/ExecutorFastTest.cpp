@@ -41,7 +41,7 @@ namespace adas
     TEST(ExecutorFastTest, should_return_y_plus_1_given_command_is_FFM_and_facing_is_N)
     {
         // given
-        std::unique_ptr<Executor> executor(Executor::NewExecutor({0,0,'E'})); // 默认起始状态是{0,0,'N'}
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0,0,'N'})); // 默认起始状态是{0,0,'N'}
         // when
         executor->Execute("FFM"); // FFM等价于M
         // then

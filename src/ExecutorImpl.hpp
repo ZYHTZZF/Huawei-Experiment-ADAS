@@ -8,7 +8,7 @@ namespace adas
     /*
     Executor的具体实现
     */
-    class ExecutorImpl final: public Executor
+    class ExecutorImpl final : public Executor
     {
     public:
         // 构造函数，传入初始姿态
@@ -42,30 +42,37 @@ namespace adas
         void Move(void) noexcept;
         void TurnLeft(void) noexcept;
         void TurnRight(void) noexcept;
+        void Fast(void) noexcept;         // 切换加速状态
+        bool IsFast(void) const noexcept; // 查询是否处于加速状态
         class MoveCommand final : public ICommand
         {
-            public:
-            void DoOperate(ExecutorImpl& executor) const noexcept override
+        public:
+            void DoOperate(ExecutorImpl &executor) const noexcept override
             {
                 executor.Move();
             }
         };
         class TurnLeftCommand final : public ICommand
         {
-            public:
-            void DoOperate(ExecutorImpl& executor) const noexcept
+        public:
+            void DoOperate(ExecutorImpl &executor) const noexcept
             {
                 executor.TurnLeft();
             }
         };
         class TurnRightCommand final : public ICommand
         {
-            public:
-            void DoOperate(ExecutorImpl& executor) const noexcept
+        public:
+            void DoOperate(ExecutorImpl &executor) const noexcept
             {
                 executor.TurnRight();
             }
         };
-        
+
+   // private:
+    //    Pose pose;
+    //    bool fast{false}; // 记录当前是否为加速状态
     };
 } // namespace adas
+
+/////////////////10.29记录，完成至ppt的page41
