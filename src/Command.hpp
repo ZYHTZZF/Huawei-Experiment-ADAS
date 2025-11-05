@@ -16,7 +16,15 @@ namespace adas
     public:
         void DoOperate(PoseHandler &poseHandler) const noexcept override
         {
-            poseHandler.Move();
+            if (poseHandler.IsFast())
+            {
+                poseHandler.Move();
+                poseHandler.Move();
+            }
+            else
+            {
+                poseHandler.Move();
+            }
         }
     };
     class TurnLeftCommand final : public ICommand
@@ -24,7 +32,14 @@ namespace adas
     public:
         void DoOperate(PoseHandler& poseHandler) const noexcept
         {
-            poseHandler.TurnLeft();
+            if(poseHandler.IsFast())
+            {
+                poseHandler.Move();
+                poseHandler.TurnLeft();
+            }
+            else{
+                poseHandler.TurnLeft();
+            }
         }
     };
     class TurnRightCommand final : public ICommand
@@ -32,7 +47,14 @@ namespace adas
     public:
         void DoOperate(PoseHandler &poseHandler) const noexcept
         {
-            poseHandler.TurnRight();
+            if(poseHandler.IsFast())
+            {
+                poseHandler.Move();
+                poseHandler.TurnRight();
+            }
+            else{
+                poseHandler.TurnRight();
+            }
         }
     };
 }
