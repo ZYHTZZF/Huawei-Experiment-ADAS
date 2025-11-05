@@ -2,6 +2,7 @@
 
 #include "Executor.hpp"
 #include "PoseHandler.hpp"
+#include "Direction.hpp"
 #include <string>
 namespace adas
 {
@@ -21,7 +22,8 @@ namespace adas
 
 
         private:
-           Pose pose;
+            Point point;
+            const Direction* facing;
             bool isFast{false}; // 记录当前是否为加速状态
 
     };

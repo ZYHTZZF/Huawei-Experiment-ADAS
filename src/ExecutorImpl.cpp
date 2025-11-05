@@ -34,11 +34,7 @@ namespace adas
                 //找到对应的操作，执行
                 it->second->DoOperate(poseHandler);
             }
-
-        
         }
     }
-
-
     // 记录当前是否为加速状态
 }
