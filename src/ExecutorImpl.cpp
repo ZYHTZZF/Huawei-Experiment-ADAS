@@ -2,6 +2,7 @@
 #include "Command.hpp"
 #include <new>
 #include <memory>
+#include <unordered_map>
 namespace adas
 {
     ExecutorImpl::ExecutorImpl(const Pose &pose) noexcept : poseHandler(pose) {}
@@ -17,31 +18,24 @@ namespace adas
     }
 
     void ExecutorImpl::Execute(const std::string &commands) noexcept {
+        //表驱动
+        std::unordered_map<char, std::unique_ptr<ICommand>> cmderMap;
+        //建立操作M和前进指令的映射
+        cmderMap.emplace('M', std::make_unique<MoveCommand>());
+        cmderMap.emplace('L', std::make_unique<TurnLeftCommand>());
+        cmderMap.emplace('R', std::make_unique<TurnRightCommand>());
+        cmderMap.emplace('F', std::make_unique<FastCommand>());
         for(const auto cmd : commands)
         {
-            std::unique_ptr<ICommand> cmder;
-            //如果是M指令
-            if(cmd == 'M')
+            //根据操作查找驱动表
+            const auto it = cmderMap.find(cmd);
+            if(it != cmderMap.end())
             {
-                cmder =std::make_unique<MoveCommand>();
+                //找到对应的操作，执行
+                it->second->DoOperate(poseHandler);
             }
-            else if(cmd == 'L')
-            {
-                cmder=std::make_unique<TurnLeftCommand>();
-            }
-            else if(cmd == 'R')
-            {
-                cmder=std::make_unique<TurnRightCommand>();
-            }
-            else if(cmd == 'F')
-            {
-                poseHandler.Fast();
-                continue;
-            }
-            if(cmder)
-            {
-                cmder->DoOperate(poseHandler);
-            }
+
+        
         }
     }
 

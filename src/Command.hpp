@@ -57,4 +57,13 @@ namespace adas
             }
         }
     };
+
+    class FastCommand final : public ICommand
+    {
+    public:
+        void DoOperate(PoseHandler &poseHandler) const noexcept override
+        {
+            poseHandler.Fast();
+        }
+    };
 }
