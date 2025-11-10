@@ -4,93 +4,93 @@
 #include <functional>
 namespace adas
 {
-    //class ICommand
-    //{
-    //public:
-    //    // 给出析构函数和纯虚函数DoOperate的声明
-    //    virtual ~ICommand(void) noexcept = default;
-    //    virtual void DoOperate(PoseHandler& poseHandler) const noexcept = 0;
-    //};
     class MoveCommand final //: public ICommand
     {
     public:
-        // void DoOperate(PoseHandler &poseHandler) const noexcept override
-        // {
-        //     if (poseHandler.IsFast())
-        //     {
-        //         poseHandler.Move();
-        //         poseHandler.Move();
-        //     }
-        //     else
-        //     {
-        //         poseHandler.Move();
-        //     }
-        // }
-
-        void operator()(PoseHandler& poseHandler)const noexcept {
+        void operator()(PoseHandler& poseHandler) const noexcept{
             if(poseHandler.IsFast()){
-                poseHandler.Move();
+                if(poseHandler.IsReverse()){
+                    poseHandler.Backward();
+                }
+                else{
+                    poseHandler.Forward();
+                }
             }
-            poseHandler.Move();
-        };
+                if(poseHandler.IsReverse()){
+                    poseHandler.Backward();
+                }
+                else{
+                    poseHandler.Forward();
+                }
+        }
     };
 
     class TurnLeftCommand final //: public ICommand
     {
     public:
-        // void DoOperate(PoseHandler& poseHandler) const noexcept
-        // {
-        //     if(poseHandler.IsFast())
-        //     {
-        //         poseHandler.Move();
-        //         poseHandler.TurnLeft();
-        //     }
-        //     else{
-        //         poseHandler.TurnLeft();
-        //     }
-        // }
+      
         void operator()(PoseHandler &poseHandler) const noexcept
         {
             if(poseHandler.IsFast()){
-                poseHandler.Move();
+                if(poseHandler.IsReverse()){
+                    poseHandler.Backward();
+                }
+                else{
+                    poseHandler.Forward();
+                }
             }
-            poseHandler.TurnLeft();
+            if(poseHandler.IsReverse()){
+                poseHandler.TurnRight();
+            }
+            else{
+                poseHandler.TurnLeft();
+            }
+         
         };
     };
     class TurnRightCommand final //: public ICommand
     {
-    // public:
-    //     void DoOperate(PoseHandler &poseHandler) const noexcept
-    //     {
-    //         if(poseHandler.IsFast())
-    //         {
-    //             poseHandler.Move();
-    //             poseHandler.TurnRight();
-    //         }
-    //         else{
-    //             poseHandler.TurnRight();
-    //         }
-    //     }
     public:
         void operator()(PoseHandler &poseHandler) const noexcept
         {
-            if(poseHandler.IsFast()){
-                poseHandler.Move();
+            if (poseHandler.IsFast())
+            {
+                if (poseHandler.IsReverse())
+                {
+                    poseHandler.Backward();
+                }
+                else
+                {
+                    poseHandler.Forward();
+                }
             }
-            poseHandler.TurnRight();
+            if (poseHandler.IsReverse())
+            {
+                poseHandler.TurnLeft();
+            }
+            else
+            {
+                poseHandler.TurnRight();
+            }
         };
     };
 
     class FastCommand final //: public ICommand
     {
     public:
-        // void DoOperate(PoseHandler &poseHandler) const noexcept override
-        // {
-        //     poseHandler.Fast();
-        // }
         void operator()(PoseHandler &poseHandler) const noexcept
         {
             poseHandler.Fast();
         };
+    };
+
+    class ReverseCommand final //: public ICommand
+    {
+        public:
+        void operator()(PoseHandler &poseHandler) const noexcept
+        {
+            poseHandler.Reverse();
+        };
+
     };
 }
