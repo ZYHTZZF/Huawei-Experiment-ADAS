@@ -7,7 +7,7 @@
 #include "Command.hpp"
 
 namespace adas{
-   using Cmder = std::function<void(PoseHandler& poseHandler)>;
+   using Cmder = std::function<ActionGroup(PoseHandler& poseHandler )>;
    using CmderList = std::list<Cmder>;
     class CmderFactory final{
     public:
@@ -21,7 +21,7 @@ namespace adas{
        CmderList GetCmders(const std::string& commands)const noexcept;
     
     private:
-       const std::unordered_map<char,Cmder>cmderMap{
+       const std::unordered_map<char,Cmder> cmderMap{
         {'M',MoveCommand()},
         {'L',TurnLeftCommand()},
         {'R',TurnRightCommand()},
