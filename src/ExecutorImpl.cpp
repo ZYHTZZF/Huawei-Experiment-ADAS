@@ -3,8 +3,8 @@
 // #include <new>
 // #include <memory>
 // #include <unordered_map>
-# include "CmderFactory.hpp"
-# include "Singleton.hpp"
+# include "cmder/CmderFactory.hpp"
+# include "core/Singleton.hpp"
 #include<algorithm>
 
 namespace adas
