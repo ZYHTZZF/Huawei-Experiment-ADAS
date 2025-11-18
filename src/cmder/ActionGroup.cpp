@@ -4,78 +4,114 @@
 #include <vector>
 #include <algorithm>
 
-namespace adas{
-    class ForwardAction final{
-        public:
-        void operator()(PoseHandler& poseHandler)const noexcept{
+namespace adas
+{
+    class ForwardAction final
+    {
+    public:
+        void operator()(PoseHandler &poseHandler) noexcept
+        {
             poseHandler.Forward();
         }
     };
-    class BackwardAction final{
-        public:
-        void operator()(PoseHandler& poseHandler)const noexcept{
+    class BackwardAction final
+    {
+    public:
+        void operator()(PoseHandler &poseHandler) noexcept
+        {
             poseHandler.Backward();
         }
     };
-    class TurnLeftAction final{
-        public:
-        void operator()(PoseHandler& poseHandler)const noexcept{
-            poseHandler.TurnLeft();
+    class LeftAction final
+    {
+    public:
+        void operator()(PoseHandler &poseHandler) noexcept
+        {
+            poseHandler.Left();
         }
     };
-    class ReverseTurnLeftAction final{
-        public:
-        void operator()(PoseHandler& poseHandler)const noexcept{
-          
-            poseHandler.TurnRight();
+    class RightAction final
+    {
+    public:
+        void operator()(PoseHandler &poseHandler) noexcept
+        {
+            poseHandler.Right();
         }
     };
-    class TurnRightAction final{
-        public:
-        void operator()(PoseHandler& poseHandler)const noexcept{
+    class ReverseLeftAction final
+    {
+    public:
+        void operator()(PoseHandler &poseHandler) noexcept
+        {
+            poseHandler.Right();
+        }
+    };
+    class ReverseRightAction final
+    {
+    public:
+        void operator()(PoseHandler &poseHandler) noexcept
+        {
+            poseHandler.Left();
+        }
+    };
+    class FastAction final
+    {
+    public:
+        void operator()(PoseHandler &poseHandler) noexcept
+        {
+            poseHandler.SetFast();
+        }
+    };
+    class BackAction final
+    {
+    public:
+        void operator()(PoseHandler &poseHandler) noexcept
+        {
+            poseHandler.SetBack();
+        }
+    };
 
-            poseHandler.TurnRight();
-        }
-    };
-    class ReverseTurnRightAction final{
-        public:
-        void operator()(PoseHandler& poseHandler)const noexcept{
-            poseHandler.TurnLeft();
-        }
-    };
-    class BeFastAction final{
-        public:
-        void operator()(PoseHandler& poseHandler)const noexcept{
-            poseHandler.Fast();
-        }
-    };
-    class BeReverseAction final{
-        public:
-        void operator()(PoseHandler& poseHandler)const noexcept{
-            poseHandler.Reverse();
-        }
-    };
-
-    ActionGroup::ActionGroup(const std::list<ActionType>& actions)noexcept : actions(actions){}
-    void ActionGroup::PushAction(const ActionType ActionType) noexcept{
-        actions.push_back(ActionType);
+    ActionGroup &ActionGroup::operator+=(const ActionType action) noexcept
+    {
+        actions.push_back(action);
+        return *this;
     }
 
-    void ActionGroup::DoOperate(PoseHandler& poseHandler) const noexcept{
-        static std::vector<std::function<void(PoseHandler & poseHandler)>> actionVec{
+    void ActionGroup::DoOperate(PoseHandler &poseHandler) const noexcept
+    {
+        static std::vector<std::function<void(PoseHandler &)>> actionMap{
             ForwardAction(),
             BackwardAction(),
-            TurnLeftAction(),
-            ReverseTurnLeftAction(),
-            TurnRightAction(),
-            ReverseTurnRightAction(),
-            BeFastAction(),
-            BeReverseAction()
-        };
-
-        std::for_each(actions.begin(), actions.end(), [&poseHandler](const ActionType actionType) noexcept{
-            actionVec[static_cast<uint16_t>(actionType)](poseHandler);
-        });
+            LeftAction(),
+            RightAction(),
+            ReverseLeftAction(),
+            ReverseRightAction(),
+            FastAction(),
+            BackAction()};
+        std::for_each(actions.begin(), actions.end(),
+                      [&poseHandler](const ActionType action) noexcept
+                      {
+                          const auto index = static_cast<std::size_t>(action);
+                          if (index < actionMap.size())
+                          {
+                              actionMap[index](poseHandler);
+                          }
+                      });
     }
 
+    ActionGroup &ActionGroup::operator+=(const ActionGroup &other) noexcept
+    {
+        actions.insert(actions.end(), other.actions.begin(), other.actions.end());
+        return *this;
+    }
+
+    ActionGroup ActionGroup::operator*(const size_t times) const noexcept
+    {
+        ActionGroup result;
+        for (size_t i = 0; i < times; ++i)
+        {
+            result += *this;
+        }
+        return result;
+    }
 }

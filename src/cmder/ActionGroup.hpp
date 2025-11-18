@@ -1,29 +1,41 @@
 #pragma once
-#include <list>
-#include "../core/PoseHandler.hpp"
 
-namespace adas{
-    enum class ActionType{
-        FORWARD_1_STEP_ACTION=0,
-        BACKWARD_1_STEP_ACTION,
-        TURNLEFT_ACTION,
-        REVERSE_TURNLEFT_ACTION,
-        TURNRIGHT_ACTION,
-        REVERSE_TURNRIGHT_ACTION,
-        BE_FAST_ACTION,
-        BE_REVERSE_ACTION,
+#include <list>
+
+#include "core/PoseHandler.hpp"
+
+namespace adas
+{
+    enum class ActionType : uint16_t
+    {
+        FORWARD_1_STEP = 0,
+        BACKWARD_1_STEP,
+        TURN_LEFT,
+        TURN_RIGHT,
+        REVERSE_LEFT,
+        REVERSE_RIGHT,
+        FAST,
+        REVERSE,
     };
 
-    class ActionGroup final{
+    class ActionGroup final
+    {
     public:
-        ActionGroup(void)=default;
-        explicit ActionGroup(const std::list<ActionType>&actions)noexcept;
-        ~ActionGroup(void)=default;
-    
-    public:
-        void PushAction(const ActionType ActionType) noexcept;
-        void DoOperate(PoseHandler& poseHandler)const noexcept;
+        ActionGroup() = default;
+        ~ActionGroup() = default;
+
+        ActionGroup(const std::list<ActionType> &actions) noexcept : actions(actions) {}
+
+        ActionGroup(const ActionGroup &) = default;
+        ActionGroup &operator=(const ActionGroup &) = default;
+
+        ActionGroup &operator+=(const ActionGroup &other) noexcept;
+        ActionGroup &operator+=(const ActionType action) noexcept;
+        ActionGroup operator*(const size_t times) const noexcept;
+
+        void DoOperate(PoseHandler &poseHandler) const noexcept;
+
     private:
         std::list<ActionType> actions;
-};
+    };
 }

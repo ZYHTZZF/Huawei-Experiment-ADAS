@@ -2,48 +2,49 @@
 
 namespace adas
 {
-    PoseHandler::PoseHandler(const Pose &pose) noexcept
-        : point(pose.x, pose.y),
-          facing(&Direction::GetDirection(pose.heading)) {}
+
+    PoseHandler::PoseHandler(const Pose &pose) noexcept : point(pose.x, pose.y), facing(&Direction::GetDirection(pose.heading)), fast(false), back(false)
+    {
+    }
 
     void PoseHandler::Forward(void) noexcept
     {
         point += facing->Move();
     }
-
     void PoseHandler::Backward(void) noexcept
     {
         point -= facing->Move();
     }
 
-    void PoseHandler::Reverse(void) noexcept
+    void PoseHandler::Left(void) noexcept
     {
-        reverse = !reverse;
+        facing = &facing->LeftOne();
     }
 
-    void PoseHandler::TurnLeft(void) noexcept
+    void PoseHandler::Right(void) noexcept
     {
-        facing = &(facing->LeftOne());
+
+        facing = &facing->RightOne();
     }
 
-    void PoseHandler::TurnRight(void) noexcept
+    void PoseHandler::SetFast(void) noexcept
     {
-        facing = &(facing->RightOne());
+        fast = !fast;
     }
 
-    void PoseHandler::Fast(void) noexcept
+    void PoseHandler::SetBack(void) noexcept
     {
-        isFast = !isFast;
+        back = !back;
     }
 
     bool PoseHandler::IsFast(void) const noexcept
     {
-        return isFast;
+        return fast;
     }
 
-    bool PoseHandler::IsReverse(void) const noexcept
+    bool PoseHandler::IsBack(void) const noexcept
     {
-        return reverse;
+        return back;
     }
 
     Pose PoseHandler::Query(void) const noexcept

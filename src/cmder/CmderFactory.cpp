@@ -1,14 +1,16 @@
 #include "CmderFactory.hpp"
+#include <algorithm>
 
 namespace adas
 {
-    CmderList CmderFactory::GetCmders(const std::string &commands) const noexcept
+
+    CmderList adas::CmderFactory::GetCmders(const std::string &commands) const noexcept
     {
         CmderList cmders;
-        for (const auto cmd : ParseCommandString(commands))
+        for (const auto cmd : ParseCommands(commands))
         {
-            const auto it = cmderMap.find(cmd);
-            if (it != cmderMap.end())
+            const auto it = commandMap.find(cmd);
+            if (it != commandMap.end())
             {
                 cmders.push_back(it->second);
             }
@@ -16,21 +18,20 @@ namespace adas
         return cmders;
     }
 
-    std::string CmderFactory::ParseCommandString(std::string_view commands) const noexcept
+    std::string CmderFactory::ParseCommands(const std::string_view commands) const noexcept
     {
-        std::string result{commands};
+        std::string result(commands);
         ReplaceAll(result, "TR", "Z");
         return result;
     }
 
-    void CmderFactory::ReplaceAll(std::string &inout, std::string_view what, std::string_view with) const noexcept
+    void CmderFactory::ReplaceAll(std::string &str, std::string_view what, std::string_view with) const noexcept
     {
-        for(
-            std::string::size_type pos{};
-            inout.npos!=(pos=inout.find(what.data(),pos,what.length()));
-            pos +=with.length()
-        ){
-            inout.replace(pos,what.length(),with.data(),with.length());
+        size_t pos = 0;
+        while ((pos = str.find(what, pos)) != std::string::npos)
+        {
+            str.replace(pos, what.length(), with);
+            pos += with.length();
         }
     }
-} // namespace adas
+}
